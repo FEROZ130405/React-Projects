@@ -1,26 +1,35 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
-const AddTodo = ({ setTodos }) => {
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
+const UpdateTodo = ({ todos, setTodos }) => {
+  const { id } = useParams();
   const navigate = useNavigate();
+  const todo = todos[id];
+  const [name, setName] = useState(todo ? todo.name : '');
+  const [description, setDescription] = useState(todo ? todo.description : '');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setTodos(prevTodos => [...prevTodos, { name, description, completed: false }]);
+    const updatedTodos = todos.map((todo, index) =>
+      index === parseInt(id) ? { ...todo, name, description } : todo
+    );
+    setTodos(updatedTodos);
     navigate('/');
   };
 
+  if (!todo) {
+    return <p>Todo not found</p>;
+  }
+
   return (
     <div>
-      <h1>Add Todo</h1>
+      <h1>Update Todo</h1>
       <form onSubmit={handleSubmit} className="edit-form">
         <input
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          placeholder="Todo name"
+          placeholder="Name"
           className="todo-input edit"
           required
         />
@@ -31,10 +40,10 @@ const AddTodo = ({ setTodos }) => {
           className="todo-input edit"
           required
         ></textarea>
-        <button type="submit" className="todo-button edit">Add</button>
+        <button type="submit" className="todo-button edit">Update</button>
       </form>
     </div>
   );
 };
 
-export default AddTodo;
+export default UpdateTodo;
