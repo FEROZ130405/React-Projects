@@ -21,13 +21,36 @@ const Summary = () => {
   return (
     <div className="container">
       <h2>Summary</h2>
-      <pre>{JSON.stringify(formData, null, 2)}</pre>
-      <button type="button" onClick={handlePrev}>
-        Previous
-      </button>
-      <button type="button" onClick={handleSubmit}>
-        Submit
-      </button>
+      <div className="summary-details">
+        <div className="summary-field">First Name:</div>
+        <div className="summary-value">{formData.firstName}</div>
+
+        <div className="summary-field">Last Name:</div>
+        <div className="summary-value">{formData.lastName}</div>
+
+        <div className="summary-field">Email:</div>
+        <div className="summary-value">{formData.email}</div>
+
+        <div className="summary-field">Phone:</div>
+        <div className="summary-value">{formData.phone}</div>
+
+        <div className="summary-field">Address:</div>
+        <div className="summary-value">{formData.address}</div>
+
+        <div className="summary-field">City:</div>
+        <div className="summary-value">{formData.city}</div>
+
+        <div className="summary-field">ZIP Code:</div>
+        <div className="summary-value">{formData.zip}</div>
+      </div>
+      <div className="button-group">
+        <button type="button" onClick={handlePrev} className="previous">
+          Previous
+        </button>
+        <button type="button" onClick={handleSubmit} className="submit">
+          Submit
+        </button>
+      </div>
     </div>
   );
 };

@@ -89,10 +89,10 @@ const Step3 = () => {
           />
           {errors.zip && <span className="error">{errors.zip}</span>}
         </div>
-        <button type="button" onClick={handlePrev}>
+        <button type="button" onClick={handlePrev} className="previous">
           Previous
         </button>
-        <button type="button" onClick={handleNext}>
+        <button type="button" onClick={handleNext} className="next">
           Next
         </button>
       </form>

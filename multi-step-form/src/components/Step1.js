@@ -66,7 +66,7 @@ const Step1 = () => {
           />
           {errors.lastName && <span className="error">{errors.lastName}</span>}
         </div>
-        <button type="button" onClick={handleNext}>
+        <button type="button" onClick={handleNext} className="next">
           Next
         </button>
       </form>
