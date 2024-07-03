@@ -3,12 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   setFormData,
   nextStep,
+  prevStep,
   setError,
   clearError,
 } from "../store/formSlice";
 import "../App.css";
 
-const Step1 = () => {
+const Step2 = () => {
   const dispatch = useDispatch();
   const formData = useSelector((state) => state.form.formData);
   const errors = useSelector((state) => state.form.errors);
@@ -20,10 +21,24 @@ const Step1 = () => {
     }
   };
 
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validatePhone = (phone) => {
+    const phoneRegex = /^\d+$/;
+    return phoneRegex.test(phone);
+  };
+
   const validate = () => {
     const newErrors = {};
-    if (!formData.firstName) newErrors.firstName = "First Name is required";
-    if (!formData.lastName) newErrors.lastName = "Last Name is required";
+    if (!formData.email) newErrors.email = "Email is required";
+    else if (!validateEmail(formData.email))
+      newErrors.email = "Invalid email format";
+    if (!formData.phone) newErrors.phone = "Phone is required";
+    else if (!validatePhone(formData.phone))
+      newErrors.phone = "Phone must contain only numbers";
     return newErrors;
   };
 
@@ -31,6 +46,7 @@ const Step1 = () => {
     const validationErrors = validate();
     if (Object.keys(validationErrors).length === 0) {
       dispatch(nextStep());
+      localStorage.setItem("formData", JSON.stringify(formData));
     } else {
       Object.keys(validationErrors).forEach((field) => {
         dispatch(setError({ field: field, message: validationErrors[field] }));
@@ -38,34 +54,39 @@ const Step1 = () => {
     }
   };
 
+  const handlePrev = () => {
+    dispatch(prevStep());
+  };
+
   return (
     <div className="container">
-      <h2>Step 1: Personal Details</h2>
+      <h2>Step 2: Contact Details</h2>
       <form>
         <div className="form-group">
-          <label htmlFor="firstName">First Name</label>
+          <label htmlFor="email">Email</label>
           <input
-            type="text"
-            id="firstName"
-            name="firstName"
-            value={formData.firstName}
+            type="email"
+            id="email"
+            name="email"
+            value={formData.email}
             onChange={handleChange}
           />
-          {errors.firstName && (
-            <span className="error">{errors.firstName}</span>
-          )}
+          {errors.email && <span className="error">{errors.email}</span>}
         </div>
         <div className="form-group">
-          <label htmlFor="lastName">Last Name</label>
+          <label htmlFor="phone">Phone</label>
           <input
             type="text"
-            id="lastName"
-            name="lastName"
-            value={formData.lastName}
+            id="phone"
+            name="phone"
+            value={formData.phone}
             onChange={handleChange}
           />
-          {errors.lastName && <span className="error">{errors.lastName}</span>}
+          {errors.phone && <span className="error">{errors.phone}</span>}
         </div>
+        <button type="button" onClick={handlePrev}>
+          Previous
+        </button>
         <button type="button" onClick={handleNext}>
           Next
         </button>
@@ -74,4 +95,4 @@ const Step1 = () => {
   );
 };
 
-export default Step1;
+export default Step2;
